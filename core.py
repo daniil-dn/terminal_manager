@@ -79,10 +79,9 @@ def get_cd(printing=False):
                 print("\n --The current dir is {}\n".format(res))
             return res
     except FileNotFoundError:
-            save_cd(reset_dir=True)
-
+        save_cd(reset_dir=True)
+        return "File Not found"
 
 
 if __name__ == '__main__':
     pass
-# TODO MAKE a function for repetitive actions - in get_cd, save_cd

@@ -20,8 +20,9 @@ try:
 except IndexError:
     exit()
 
-os.chdir(get_cd())
-
+cd = get_cd()
+if cd != "File Not found":
+    os.chdir(cd)
 
 if command == 'ls':
     get_list()
