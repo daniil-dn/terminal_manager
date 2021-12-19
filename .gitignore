@@ -3,3 +3,5 @@ log.txt
 .idea
 __pycache__
 *.pyc
+cur_dir.data
+./test

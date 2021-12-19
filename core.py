@@ -1,7 +1,6 @@
 import os
 import shutil
 import datetime
-import json
 
 
 def create_file(name, text=None):
@@ -21,7 +20,8 @@ def get_list(folders_only=False):
     res = os.listdir()
     if folders_only:
         res = [f for f in res if os.path.isdir(f)]
-    print(res)
+
+    print(res if res else 'The current directory is empty')
 
 
 def delete_file(name):
@@ -48,18 +48,30 @@ def save_log(message):
 
 
 def save_cd(path='', reset_dir=False):
-    if reset_dir == True:
+    if reset_dir is True:
         os.chdir(os.path.dirname(__file__))
-    elif reset_dir == False and path == True:
+        with open(f'{os.path.dirname(__file__)}/cur_dir.data', 'w', encoding='utf-8') as f:
+            f.write(os.getcwd())
+    elif reset_dir is False and path is not False:
         # just save new path
-        pass
+        try:
+            os.chdir(path)
+        except FileNotFoundError:
+            exit("ERROR:\n\tThe new path is invalid!")
+        with open(f'{os.path.dirname(__file__)}/cur_dir.data', 'w', encoding='utf-8') as f:
+            f.write(os.getcwd())
     else:
-        exit('new path is empty')
+        exit('the new path is empty')
 
 
-def get_cur_dir():
-    pass
+def get_cd(printing=False):
+    with open(f'{os.path.dirname(__file__)}/cur_dir.data', 'r', encoding='utf-8') as f:
+        res = f.read()
+        if printing:
+            print("\n --The current dir is {}\n".format(res))
+        return res
 
 
 if __name__ == '__main__':
     pass
+# TODO MAKE a function for repetitive actions - in get_cd, save_cd

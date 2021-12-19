@@ -1,7 +1,7 @@
 import sys
 import os
 
-from core import create_file, create_folder, get_list, delete_file, copy_file, save_log, save_cd
+from core import create_file, create_folder, get_list, delete_file, copy_file, save_log, save_cd, get_cd
 
 
 def get_params_list(nums, this_command=''):
@@ -14,22 +14,23 @@ def get_params_list(nums, this_command=''):
         exit()
 
 
-os.chdir('./test')
-print(os.getcwd())
-save_cd(reset_dir=True)
-print(os.getcwd())
-
 command = []
 try:
     command = sys.argv[1]
 except IndexError:
     exit()
 
+os.chdir(get_cd())
+
+
 if command == 'ls':
     get_list()
+    get_cd(1)
 elif command == 'cd':
     params = get_params_list(1)
     save_cd(params[0])
+elif command == 'cd_reset':
+    save_cd(reset_dir=True)
 elif command == 'create_file':
     params_list = get_params_list(2, 'create_file')
     create_file(params_list[0])
