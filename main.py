@@ -1,6 +1,7 @@
 import sys
+import os
 
-from core import create_file, create_folder, get_list, delete_file, copy_file, save_log
+from core import create_file, create_folder, get_list, delete_file, copy_file, save_log, save_cd
 
 
 def get_params_list(nums, this_command=''):
@@ -9,8 +10,14 @@ def get_params_list(nums, this_command=''):
         return res
     else:
         print(f"not enough arguments for the command -  \"{this_command}\" ")
+
         exit()
 
+
+os.chdir('./test')
+print(os.getcwd())
+save_cd(reset_dir=True)
+print(os.getcwd())
 
 command = []
 try:
@@ -20,6 +27,9 @@ except IndexError:
 
 if command == 'ls':
     get_list()
+elif command == 'cd':
+    params = get_params_list(1)
+    save_cd(params[0])
 elif command == 'create_file':
     params_list = get_params_list(2, 'create_file')
     create_file(params_list[0])
@@ -38,8 +48,6 @@ elif command == 'help':
     print("create_folder - to create a folder")
     print("delete - to delete a file or a folder")
     print("copy - to copy a file or a folder")
-
-
 
 else:  # ---COMMAND DOESN'T EXIST---
     exit("this command doesn't exist")

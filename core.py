@@ -1,6 +1,7 @@
 import os
 import shutil
 import datetime
+import json
 
 
 def create_file(name, text=None):
@@ -41,10 +42,23 @@ def copy_file(name, new_name):
 def save_log(message):
     current_time = datetime.datetime.now()
     res = f"{current_time} - {message}"
-    with open('log.txt', 'a', encoding="utf-8") as f:
+    with open(f'{os.path.dirname(__file__)}/log.txt', 'a', encoding="utf-8") as f:
         f.write(res + '\n')
-
     print(res)
+
+
+def save_cd(path='', reset_dir=False):
+    if reset_dir == True:
+        os.chdir(os.path.dirname(__file__))
+    elif reset_dir == False and path == True:
+        # just save new path
+        pass
+    else:
+        exit('new path is empty')
+
+
+def get_cur_dir():
+    pass
 
 
 if __name__ == '__main__':
