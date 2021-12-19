@@ -2,6 +2,9 @@ import os
 import shutil
 import datetime
 
+CUR_DIR_FILE = 'cur_dir.data'
+LOG_FILE = 'log.txt'
+
 
 def create_file(name, text=None):
     with open(name, 'w', encoding='utf-8') as f:
@@ -42,15 +45,19 @@ def copy_file(name, new_name):
 def save_log(message):
     current_time = datetime.datetime.now()
     res = f"{current_time} - {message}"
-    with open(f'{os.path.dirname(__file__)}/log.txt', 'a', encoding="utf-8") as f:
+    with open(f'{os.path.dirname(__file__)}/{LOG_FILE}', 'a', encoding="utf-8") as f:
         f.write(res + '\n')
     print(res)
+
+
+def get_default_path(file):
+    return f'{os.path.dirname(__file__)}/{file}'
 
 
 def save_cd(path='', reset_dir=False):
     if reset_dir is True:
         os.chdir(os.path.dirname(__file__))
-        with open(f'{os.path.dirname(__file__)}/cur_dir.data', 'w', encoding='utf-8') as f:
+        with open(get_default_path(f'{CUR_DIR_FILE}'), 'w', encoding='utf-8') as f:
             f.write(os.getcwd())
     elif reset_dir is False and path is not False:
         # just save new path
@@ -58,18 +65,22 @@ def save_cd(path='', reset_dir=False):
             os.chdir(path)
         except FileNotFoundError:
             exit("ERROR:\n\tThe new path is invalid!")
-        with open(f'{os.path.dirname(__file__)}/cur_dir.data', 'w', encoding='utf-8') as f:
+        with open(get_default_path(CUR_DIR_FILE), 'w', encoding='utf-8') as f:
             f.write(os.getcwd())
     else:
         exit('the new path is empty')
 
 
 def get_cd(printing=False):
-    with open(f'{os.path.dirname(__file__)}/cur_dir.data', 'r', encoding='utf-8') as f:
-        res = f.read()
-        if printing:
-            print("\n --The current dir is {}\n".format(res))
-        return res
+    try:
+        with open(get_default_path(CUR_DIR_FILE), 'r', encoding='utf-8') as f:
+            res = f.read()
+            if printing:
+                print("\n --The current dir is {}\n".format(res))
+            return res
+    except FileNotFoundError:
+            save_cd(reset_dir=True)
+
 
 
 if __name__ == '__main__':
