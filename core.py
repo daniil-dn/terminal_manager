@@ -3,8 +3,6 @@ import shutil
 import datetime
 
 
-
-
 def create_file(name, text=None):
     with open(name, 'w', encoding='utf-8') as f:
         if text:
@@ -15,7 +13,7 @@ def create_folder(name):
     try:
         os.mkdir(name)
     except FileExistsError:
-        print('The folder with such name already exists.')
+        print('The folder already exists.')
 
 
 def get_list(folders_only=False):
@@ -35,7 +33,7 @@ def copy_file(name, new_name):
         try:
             shutil.copytree(name, new_name)
         except FileExistsError:
-            print("The directory exists.")
+            print("The file already exists.")
     else:
         shutil.copy(name, new_name)
 

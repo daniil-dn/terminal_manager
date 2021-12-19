@@ -3,28 +3,35 @@ import sys
 from core import create_file, create_folder, get_list, delete_file, copy_file, save_log
 
 
-command = sys.argv[1]
+def get_params_list(nums, this_command=''):
+    res = sys.argv[2: nums + 2]
+    if res:
+        return res
+    else:
+        print(f"not enough arguments for the command -  \"{this_command}\" ")
+        exit()
 
-save_log("completed {} with params: {}".format(command, sys.argv))
+
+command = []
+try:
+    command = sys.argv[1]
+except IndexError:
+    exit()
+
 if command == 'ls':
     get_list()
 elif command == 'create_file':
-    name = sys.argv[2]
-    create_file(name)
+    params_list = get_params_list(2, 'create_file')
+    create_file(params_list[0])
 elif command == 'create_folder':
-    try:
-        name = sys.argv[2]
-    except:
-        print('You have forgotten the second parameter')
-    else:
-        create_folder(name)
+    params_list = get_params_list(2, command)
+    create_folder(params_list[0])
 elif command == "delete":
-    name = sys.argv[2]
-    delete_file(name)
+    params_list = get_params_list(2, command)
+    delete_file(params_list[0])
 elif command == 'copy':
-    name = sys.argv[2]
-    new_name = sys.argv[3]
-    copy_file(name, new_name)
+    params_list = get_params_list(2, command)
+    copy_file(params_list[0], params_list[1])
 elif command == 'help':
     print("help to print help)))")
     print("create_file - to create a file")
@@ -33,4 +40,8 @@ elif command == 'help':
     print("copy - to copy a file or a folder")
 
 
-save_log('end')
+
+else:  # ---COMMAND DOESN'T EXIST---
+    exit("this command doesn't exist")
+
+save_log("completed {} with params: {}".format(command, sys.argv))
